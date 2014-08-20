@@ -52,3 +52,15 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# intellij folder
+.idea
+
+# vagrant
+.vagrant
+
+# bin folder with the virtual envs in
+bin/
+
+# mongodb
+mongodb.log
+data/
