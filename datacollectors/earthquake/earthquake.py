@@ -69,7 +69,11 @@ client.close()
 
 print "Updated", len(data), "rows"
 
+#import time
 # debug print out all the rows in the db
 #for row in earthquake_collection.find():
 #    print row["date"], row["latitude"], row["longitude"], row["size"]
+#    unix_time = time.mktime(row["date"].timetuple())
+#    print unix_time
+#    break
 
