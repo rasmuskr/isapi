@@ -32,6 +32,7 @@ server {
         gzip_vary         on;
 
         uwsgi_cache isapizone;
+        uwsgi_cache_key \$request_uri;
         uwsgi_cache_lock on;
         uwsgi_ignore_headers Set-Cookie;
         uwsgi_hide_header Set-Cookie;
