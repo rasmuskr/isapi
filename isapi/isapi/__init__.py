@@ -120,7 +120,6 @@ def earthquakes():
         else:
             return flask.Response("date query parameter bad", status=400)
 
-
     results = earthquake_collection.find(
         spec={
             "date": {
@@ -134,19 +133,23 @@ def earthquakes():
     formatted_results = []
 
     for result in results:
-        formatted_result = {
-            "date": time.mktime(result["date"].timetuple()),
-            "date_human": result["date"],
-            "latitude": result["latitude"],
-            "longitude": result["longitude"],
-            "depth": result["depth"],
-            "size": result["size"],
-            "quality": result["quality"],
-            "location_dist": result["location_dist"],
-            "location_dir": result["location_dir"],
-            "location_name": result["location_name"],
-        }
-        formatted_results.append(formatted_result)
+        try:
+            formatted_result = {
+                "date": time.mktime(result["date"].utctimetuple()),
+                "date_human": result["date"],
+                "latitude": result["latitude"],
+                "longitude": result["longitude"],
+                "depth": result["depth"],
+                "size": result["size"],
+                "quality": result["quality"],
+                "location_dist": result["location_dist"],
+                "location_dir": result["location_dir"],
+                "location_name": result["location_name"],
+                "verified": result.get("verified", False),
+            }
+            formatted_results.append(formatted_result)
+        except Exception as e:
+            formatted_results.append({"error": e.message})
 
     return_data = {
         "start": start_date,
