@@ -12,45 +12,48 @@ response = requests.get("http://hraun.vedur.is/ja/skjalftar/skjlisti.html")
 data = []
 
 if response.status_code == 200:
-    ########### Parse data
-    parsed_html = BeautifulSoup.BeautifulSoup(response.text)
+    try:
+        ########### Parse data
+        parsed_html = BeautifulSoup.BeautifulSoup(response.text)
 
-    first = True
-    for table_row in parsed_html.body.findAll("table")[2].findAll("tr"):
-        # skip the header line
-        if first:
-            first = False
-            continue
+        first = True
+        for table_row in parsed_html.body.findAll("table")[2].findAll("tr"):
+            # skip the header line
+            if first:
+                first = False
+                continue
 
-        day, time, latitude, longitude, depth, size, quality, location_dist, location_dir, location_name = table_row.findAll("td")
-        day = day.text
-        time, subsecond = time.text.split(",")
-        subsecond = float("0."+subsecond)
+            day, time, latitude, longitude, depth, size, quality, location_dist, location_dir, location_name = table_row.findAll("td")
+            day = day.text
+            time, subsecond = time.text.split(",")
+            subsecond = float("0."+subsecond)
 
-        date_object = datetime.datetime.strptime("%s %s %06d" % (day, time, subsecond*1000000), '%Y-%m-%d %H:%M:%S %f')
+            date_object = datetime.datetime.strptime("%s %s %06d" % (day, time, subsecond*1000000), '%Y-%m-%d %H:%M:%S %f')
 
-        latitude = float(latitude.text.replace(",", "."))
-        longitude = float(longitude.text.replace(",", "."))
-        depth = float(depth.text.replace(",", "."))
-        size = float(size.text.replace(",", "."))
-        quality = float(quality.text.replace(",", "."))
-        location_dist = location_dist.text
-        location_dir = location_dir.text
-        location_name = location_name.text
+            latitude = float(latitude.text.replace(",", "."))
+            longitude = float(longitude.text.replace(",", "."))
+            depth = float(depth.text.replace(",", "."))
+            size = float(size.text.replace(",", "."))
+            quality = float(quality.text.replace(",", "."))
+            location_dist = location_dist.text
+            location_dir = location_dir.text
+            location_name = location_name.text
 
-        data_row = {
-            "date": date_object,
-            "latitude": latitude,
-            "longitude": longitude,
-            "depth": depth,
-            "size": size,
-            "quality": quality,
-            "location_dist": location_dist,
-            "location_dir": location_dir,
-            "location_name": location_name,
-            #"verified": False,
-        }
-        data.append(data_row)
+            data_row = {
+                "date": date_object,
+                "latitude": latitude,
+                "longitude": longitude,
+                "depth": depth,
+                "size": size,
+                "quality": quality,
+                "location_dist": location_dist,
+                "location_dir": location_dir,
+                "location_name": location_name,
+                "verified": False,
+            }
+            data.append(data_row)
+    except:
+        print "failed to parse data from www.vedur.is/skjalftar-og-eldgos"
 else:
     print "Failed to get new data from hraun.vedur.is"
 
@@ -61,36 +64,39 @@ verified_data = []
 response = requests.get("http://www.vedur.is/skjalftar-og-eldgos/jardskjalftar#view=table")
 if response.status_code == 200:
 
-    js_data_dict_string = response.text.split("VI.quakeInfo = [", 1)[1].split("];\n", 1)[0]
+    try:
+        js_data_dict_string = response.text.split("VI.quakeInfo = [", 1)[1].split("];\n", 1)[0]
 
-    for row in js_data_dict_string.split("},"):
-        singlequote_split = row.split("'")
-        date = singlequote_split[2][10:-2]
-        date_object = datetime.datetime.strptime(date, '%Y,%m-1,%d,%H,%M,%S')
-        a = float(singlequote_split[5])
-        latitude = float(singlequote_split[9].replace(",", "."))
-        longitude = float(singlequote_split[13].replace(",", "."))
-        depth = float(singlequote_split[17].replace(",", "."))
-        size = float(singlequote_split[21].replace(",", "."))
+        for row in js_data_dict_string.split("},"):
+            singlequote_split = row.split("'")
+            date = singlequote_split[2][10:-2]
+            date_object = datetime.datetime.strptime(date, '%Y,%m-1,%d,%H,%M,%S')
+            a = float(singlequote_split[5])
+            latitude = float(singlequote_split[9].replace(",", "."))
+            longitude = float(singlequote_split[13].replace(",", "."))
+            depth = float(singlequote_split[17].replace(",", "."))
+            size = float(singlequote_split[21].replace(",", "."))
 
-        quality = float(singlequote_split[25].replace(",", "."))
-        location_dist = float(singlequote_split[29].replace(",", "."))
-        location_dir = singlequote_split[33].rstrip()
-        location_name = singlequote_split[37]
+            quality = float(singlequote_split[25].replace(",", "."))
+            location_dist = float(singlequote_split[29].replace(",", "."))
+            location_dir = singlequote_split[33].rstrip()
+            location_name = singlequote_split[37]
 
-        data_row = {
-            "date": date_object,
-            "latitude": latitude,
-            "longitude": longitude,
-            "depth": depth,
-            "size": size,
-            "quality": quality,
-            "location_dist": location_dist,
-            "location_dir": location_dir,
-            "location_name": location_name,
-            "verified": True,
-        }
-        verified_data.append(data_row)
+            data_row = {
+                "date": date_object,
+                "latitude": latitude,
+                "longitude": longitude,
+                "depth": depth,
+                "size": size,
+                "quality": quality,
+                "location_dist": location_dist,
+                "location_dir": location_dir,
+                "location_name": location_name,
+                "verified": True,
+            }
+            verified_data.append(data_row)
+    except:
+        print "failed to parse data from www.vedur.is/skjalftar-og-eldgos"
 
 else:
     print "failed to get new data from www.vedur.is/skjalftar-og-eldgos"
