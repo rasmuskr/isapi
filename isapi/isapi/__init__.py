@@ -133,15 +133,14 @@ def earthquakes():
         try:
             formatted_result = {
                 "date": calendar.timegm(result["date"].utctimetuple()),
-                "date_human": result["date"],
-                "latitude": result["latitude"],
-                "longitude": result["longitude"],
+                "lat": result["latitude"],
+                "long": result["longitude"],
                 "depth": result["depth"],
                 "size": result["size"],
                 "quality": result["quality"],
-                "location_dist": result["location_dist"],
-                "location_dir": result["location_dir"],
-                "location_name": result["location_name"],
+                "loc_dist": result["location_dist"],
+                "loc_dir": result["location_dir"],
+                "loc_name": result["location_name"],
                 "verified": result.get("verified", False),
             }
             formatted_results.append(formatted_result)
@@ -151,12 +150,13 @@ def earthquakes():
     return_data = {
         "start": start_date,
         "end": end_date,
-        "items": formatted_results
+        "items": formatted_results,
+        "count": len(formatted_results),
     }
 
     # Fiddle with the cache
 
-    response = flask.jsonify(return_data)
+    response = flask.Response(flask.json.dumps(return_data))
 
     if datetime.datetime.utcnow() <= end_date or force_short_cache:
         response.cache_control.max_age = 10
