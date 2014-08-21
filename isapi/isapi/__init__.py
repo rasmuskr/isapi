@@ -135,7 +135,7 @@ def earthquakes():
     for result in results:
         try:
             formatted_result = {
-                "date": time.mktime(result["date"].utctimetuple()),
+                "date": time.mktime(result["date"].timetuple()),
                 "date_human": result["date"],
                 "latitude": result["latitude"],
                 "longitude": result["longitude"],
