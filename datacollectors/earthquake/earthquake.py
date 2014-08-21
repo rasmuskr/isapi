@@ -37,7 +37,10 @@ if response.status_code == 200:
             quality = float(quality.text.replace(",", "."))
             location_dist = location_dist.text
             location_dir = location_dir.text
-            location_name = location_name.text
+            if location_name.text.startswith("af "):
+                location_name = location_name.text[3:]
+            else:
+                location_name = location_name.text
 
             data_row = {
                 "date": date_object,
