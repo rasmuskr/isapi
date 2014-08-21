@@ -15,7 +15,7 @@ log_format isapi_log_format '\$remote_addr - \$remote_user [\$time_local] '
         '"\$http_referer" "\$http_user_agent" '
         '\$request_time \$upstream_response_time \$pipe \$upstream_cache_status';
 
-
+uwsgi_cache_path /tmp/ngx-cache-isapi/ keys_zone=isapizone:10m;
 
 server {
         listen          80;
@@ -31,7 +31,6 @@ server {
         gzip_types        *;
         gzip_vary         on;
 
-        uwsgi_cache_path /tmp/ngx-cache-isapi/ keys_zone=isapizone:10m;
         uwsgi_cache isapizone;
         uwsgi_cache_lock on;
         uwsgi_ignore_headers Set-Cookie;
