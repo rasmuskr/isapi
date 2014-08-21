@@ -1,10 +1,7 @@
-
-import datetime
-
 import flask
 app = flask.Flask(__name__)
 import pymongo
-import time
+import calendar
 import datetime
 import functools
 
@@ -135,7 +132,7 @@ def earthquakes():
     for result in results:
         try:
             formatted_result = {
-                "date": time.mktime(result["date"].timetuple()),
+                "date": calendar.timegm(result["date"].utctimetuple()),
                 "date_human": result["date"],
                 "latitude": result["latitude"],
                 "longitude": result["longitude"],
