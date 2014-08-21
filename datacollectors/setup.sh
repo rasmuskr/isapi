@@ -21,5 +21,5 @@ fi
 
 
 cat << EOF > /etc/cron.d/isapi_datacollectors
-* *    * * *   root    bash ${DIR}/datacollectors/trigger-collectors.sh
+* *    * * *   root    bash ${DIR}/trigger-collectors.sh
 EOF
