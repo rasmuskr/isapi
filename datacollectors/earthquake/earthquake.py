@@ -159,8 +159,8 @@ for data_row in verified_data:
     else:
         found_row = found_rows[0]
         # if we already have verified it just skip it
-        if found_row.get("verified", False):
-            continue
+        #if found_row.get("verified", False):
+        #    continue
         # count it one so update
         # remove teh date as it has less precision here
         data_row["date"] = found_row["date"]
