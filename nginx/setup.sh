@@ -19,6 +19,7 @@ uwsgi_cache_path /tmp/ngx-cache-isapi/ keys_zone=isapizone:10m;
 
 server {
         listen          80;
+	listen [::]:80;
         server_name     isapi.rasmuskr.dk localhost;
         access_log /var/log/nginx/isapi.access.log isapi_log_format;
         error_log /var/log/nginx/isapi.error.log;
