@@ -106,6 +106,8 @@ def earthquakes():
             try:
                 hours_ago_string, text = input_date_string.rsplit("-", 1)
                 hours_ago = int(hours_ago_string)
+                if hours_ago > 96:
+                    hours_ago = 96
                 start_time = datetime.datetime.utcnow() - datetime.timedelta(hours=hours_ago)
                 start_date = datetime.datetime(start_time.year, start_time.month, start_time.day, start_time.hour)
 
