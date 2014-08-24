@@ -280,7 +280,7 @@ cat << EOF > /etc/logstash/conf.d/20_nginx_api_acess.conf
 input {
  file {
    type => "nginx_api_access"
-   path => ["/var/log/nginx/*.log"]
+   path => ["/var/log/nginx/**"]
    exclude => ["*.gz", "error.*"]
    discover_interval => 10
    start_position => "beginning"
