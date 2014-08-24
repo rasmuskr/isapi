@@ -252,7 +252,10 @@ service kibana start
 #####################################################################################
 
 # Grant access so logstash can read the folder
-sudo chmod 755 /var/log/nginx/
+chmod 755 /var/log/nginx/
+chmod chmod o+r /var/log/nginx/*
+
+usermod -aG adm logstash
 
 echo "deb http://packages.elasticsearch.org/logstash/1.3/debian stable main" | sudo tee /etc/apt/sources.list.d/logstash.list
 
@@ -280,6 +283,7 @@ input {
    path => ["/var/log/nginx/isapi*.log"]
    exclude => ["*.gz", "error.*"]
    discover_interval => 10
+   start_position => "beginning"
  }
 }
 
