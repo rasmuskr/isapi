@@ -280,7 +280,7 @@ cat << EOF > /etc/logstash/conf.d/20_nginx_api_acess.conf
 input {
  file {
    type => "nginx_api_access"
-   path => ["/var/log/nginx/isapi*.log"]
+   path => ["/var/log/nginx/*.log"]
    exclude => ["*.gz", "error.*"]
    discover_interval => 10
    start_position => "beginning"
@@ -290,6 +290,14 @@ input {
 filter {
  grok {
    match => [ "message", "%{COMBINEDAPACHELOG}(?: %{DATA:request_time})(:? %{DATA:upstream_response_time})(:? %{DATA:pipe})(:? %{WORD:upstream_cache_status})" ]
+ }
+ geoip {
+   add_tag => [ "geoip" ]
+   source => "clientip"
+ }
+ date {
+      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
+      add_tag => [ "tsmatch" ]
  }
 }
 EOF
