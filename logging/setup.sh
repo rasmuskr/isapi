@@ -289,7 +289,7 @@ input {
 
 filter {
  grok {
-   match => [ "message", "%{COMBINEDAPACHELOG}(?: %{DATA:request_time})(:? %{DATA:upstream_response_time})(:? %{DATA:pipe})(:? %{WORD:upstream_cache_status})" ]
+   match => [ "message", "%{COMBINEDAPACHELOG}(?: %{DATA:request_time})(:? %{DATA:upstream_response_time})(:? %{DATA:pipe})(:? %{WORD:upstream_cache_status})%{GREEDYDATA}" ]
  }
  geoip {
    add_tag => [ "geoip" ]
