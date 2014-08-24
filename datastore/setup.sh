@@ -19,7 +19,7 @@ cat << EOF > /etc/mongodb.conf
 # Where to store the data.
 dbpath=${DATA_DIR}
 #where to log
-logpath=${DIR}/../mongodb.log
+# logpath=${DIR}/../mongodb.log
 
 logappend=true
 
@@ -115,5 +115,7 @@ journal=true
 #sslPEMKeyPassword = pass
 
 EOF
+
+export LC_ALL=C
 
 service mongodb restart
