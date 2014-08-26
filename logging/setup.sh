@@ -302,21 +302,38 @@ filter {
       match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
       add_tag => [ "tsmatch" ]
  }
- mutate {
-  add_field => { "upstream_response_time_f" => "%{upstream_response_time}" }
-  convert => [ "upstream_response_time_f", "float" ]
+ if [upstream_response_time] =~ /^[+-]?\d*\.\d+$/ {
+  mutate {
+   add_field => { "upstream_response_time_f" => "%{upstream_response_time}" }
+  }
+  mutate {
+   convert => [ "upstream_response_time_f", "float" ]
+  }
  }
- mutate {
-  add_field => { "request_time_f" => "%{request_time}" }
-  convert => [ "request_time_f", "float" ]
+ if [request_time] =~ /^[+-]?\d*\.\d+$/ {
+  mutate {
+   add_field => { "request_time_f" => "%{request_time}" }
+  }
+  mutate {
+   convert => [ "request_time_f", "float" ]
+  }
  }
- mutate {
-  add_field => { "bytes_i" => "%{bytes}" }
-  convert => [ "bytes_i", "integer" ]
+ if [bytes] =~ /^[+-]?\d+$/ {
+  mutate {
+   add_field => { "bytes_i" => "%{bytes}" }
+  }
+  mutate {
+   convert => [ "bytes_i", "integer" ]
+  }
  }
- mutate {
-  add_field => { "response_i" => "%{response}" }
-  convert => [ "response_i", "integer" ]
+ if [response] =~ /^[+-]?\d+$/ {
+  mutate {
+   add_field => { "response_i" => "%{response}" }
+  }
+  mutate {
+   convert => [ "response_i", "integer" ]
+  }
+
  }
 
 
