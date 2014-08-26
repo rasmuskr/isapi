@@ -302,6 +302,25 @@ filter {
       match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
       add_tag => [ "tsmatch" ]
  }
+ mutate {
+  add_field => { "upstream_response_time_f" => "%{upstream_response_time}" }
+  convert => [ "upstream_response_time_f", "float" ]
+ }
+ mutate {
+  add_field => { "request_time_f" => "%{request_time}" }
+  convert => [ "request_time_f", "float" ]
+ }
+ mutate {
+  add_field => { "bytes_i" => "%{bytes}" }
+  convert => [ "bytes_i", "integer" ]
+ }
+ mutate {
+  add_field => { "response_i" => "%{response}" }
+  convert => [ "response_i", "integer" ]
+ }
+
+
+
 }
 EOF
 
